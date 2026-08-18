@@ -1,0 +1,41 @@
+# Committed-state layer, a Cloudflare Worker
+#
+# Deploy with:  wrangler deploy   (from this worker/ directory)
+# Workers AI + Durable Objects require a code deploy; the static "Upload assets"
+# flow does not support them. Vectorize requires a Workers Paid plan.
+#
+# Auth is handled by `wrangler login` (or a CLOUDFLARE_API_TOKEN in your shell).
+# Do NOT put an account id or an API token in this file.
+
+name = "committed-state-demo"
+main = "worker.js"
+compatibility_date = "2026-07-01"
+
+# Workers AI binding (env.AI)
+[ai]
+binding = "AI"
+
+# Durable Object binding (env.COMMITTED_STATE), the committed-state layer
+[[durable_objects.bindings]]
+name = "COMMITTED_STATE"
+class_name = "CommittedState"
+
+# SQLite-backed Durable Object migration
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["CommittedState"]
+
+# Vectorize binding (env.VEC), managed-memory arm, 768-d
+# One-time prerequisite before deploy:
+#   wrangler vectorize create committed-state-mem --dimensions=768 --metric=cosine
+# Per-session isolation uses Vectorize NAMESPACES (no metadata index required).
+[[vectorize]]
+binding = "VEC"
+index_name = "committed-state-mem"
+
+# Optional larger-embedding index (1024-d: bge-large / bge-m3), to test whether a
+# bigger embedding model moves the retrieval accuracy knee.
+#   wrangler vectorize create committed-state-mem-1024 --dimensions=1024 --metric=cosine
+[[vectorize]]
+binding = "VEC1024"
+index_name = "committed-state-mem-1024"

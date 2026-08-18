@@ -1,0 +1,29 @@
+# Cloudflare / wrangler
+.wrangler/
+.dev.vars
+wrangler.toml.bak
+
+# secrets, never commit
+*.env
+.env
+*token*
+*secret*
+*.pem
+*.key
+
+# python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# os
+.DS_Store
+Thumbs.db
+
+# local results
+*.db
+*_summary.json
+
+# internal, never publish
+LAYOUT.md
