@@ -76,7 +76,7 @@ curl "https://<your-worker>.workers.dev/embdims?model=@cf/baai/bge-base-en-v1.5"
 
 Routes are documented at the top of [`worker/worker.js`](worker/worker.js).
 
-## Scope, and what this is not
+## Scope
 
 This is a demonstration of the committed-state idea and a way to measure the cost of
 memory, not a benchmark verdict on any platform. Where it quotes numbers, they were taken
